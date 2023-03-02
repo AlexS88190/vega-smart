@@ -1,0 +1,6 @@
+version: '3'
+services:
+  vega-smart-app:
+    image: vega-smart-app
+    ports:
+      - 80:80

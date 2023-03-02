@@ -1,0 +1,23 @@
+table {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    border-collapse: separate;
+    width: 100%;
+    font-size: 22px;
+}
+
+table td, #table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: rgb(221, 221, 221);}
+
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #00bf80;
+    color: white;
+}
