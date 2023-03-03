@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {dateTemplate, causeMessageTemplate, statusDoorTemplate, typeTemplate, rowHeadTable} from "../../utils/constants";
 import './Table.css'
-import {logDOM} from "@testing-library/react";
 
 // const payload = {
 //     data: '0163ccb44a61e4002901000b1b381418',
@@ -105,13 +104,11 @@ function Table({payload}) {
             }
             row.push({id: i + 1, value: listValueCells[i], type: typeTemplate[String(i + 1)]})
         }
-        setRows((oldRows) => {
-            return [row, ...oldRows]
+        setRows(() => {
+            return [row]
         })
     }
 
-    console.log(rows)
-    console.log(payload)
     return (
         <table>
             <thead>
