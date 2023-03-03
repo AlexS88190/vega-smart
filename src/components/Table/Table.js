@@ -1,19 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {dateTemplate, causeMessageTemplate, statusDoorTemplate, typeTemplate, rowHeadTable} from "../../utils/constants";
 import './Table.css'
+import {logDOM} from "@testing-library/react";
 
-const payload = {
-    data: '0163ccb44a61e4002901000b1b381418',
-    fcnt: 900
-}
+// const payload = {
+//     data: '0163ccb44a61e4002901000b1b381418',
+//     fcnt: 900
+// }
 
-function Table() {
+function Table({payload}) {
 
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        getValueRow(payload)
-    }, [])
+        if (payload) {
+            getValueRow(payload)
+        }
+    }, [payload])
 
     function getDecimalValue(hexValue) {
         let decValue = ''
@@ -108,6 +111,7 @@ function Table() {
     }
 
     console.log(rows)
+    console.log(payload)
     return (
         <table>
             <thead>
@@ -117,6 +121,8 @@ function Table() {
                     ))}
                 </tr>
             </thead>
+
+            {rows &&
             <tbody>
             {rows.map((row, index) => (
                 <tr key={index}>
@@ -125,7 +131,7 @@ function Table() {
                     })}
                 </tr>
             ))}
-            </tbody>
+            </tbody>}
         </table>
     );
 }
