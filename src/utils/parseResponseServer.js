@@ -54,7 +54,12 @@ export const useParse = () => {
     }
 
     function convertValueDate(value) {
-        const dateFull = new Date(value * 1000)
+        let dateFull
+        if (String(value).length > 10) {
+            dateFull = new Date(value)
+        } else {
+            dateFull = new Date(value * 1000)
+        }
         const listItemDateFull = dateFull.toString().split(' ').slice(1, 5);
         let listItemDate = []
         let buff
@@ -94,6 +99,7 @@ export const useParse = () => {
     }
 
     return {
-        getValueRow
+        getValueRow,
+        convertValueDate
     }
 }

@@ -26,6 +26,7 @@ function Table({payload}) {
         })
     }
 
+    console.log('render Table')
     return (
         <table>
             <thead>
@@ -50,4 +51,4 @@ function Table({payload}) {
     );
 }
 
-export default Table;
+export default React.memo(Table);

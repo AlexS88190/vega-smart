@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import ReactExport from "react-export-excel-xlsx-fix";
@@ -14,8 +14,6 @@ const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
-
-
 function DateTimePickerValue({ downloadList, getStatisticDownload }) {
     const [valueFrom, setValueFrom] = React.useState(dayjs(''));
     const [valueTo, setValueTo] = React.useState(dayjs(''));
@@ -24,22 +22,64 @@ function DateTimePickerValue({ downloadList, getStatisticDownload }) {
 
     const [isDisableButton, setIsDisableButton] = useState(true)
 
-    const {getValueRow} = useParse()
+    const {getValueRow, convertValueDate} = useParse()
 
     useEffect(() => {
         if (valueFrom.$L !== 'en' && valueTo.$L !== 'en') {
             const loadDayFrom = convertDateToUtc(valueFrom.$d)
             const loadDayTo = convertDateToUtc(valueTo.$d)
+            console.log(loadDayFrom)
+            console.log(loadDayTo)
 
             getStatisticDownload(loadDayFrom, loadDayTo)
         }
     }, [valueFrom, valueTo])
 
     useEffect(() => {
+        parseDownloadList(downloadList)
+
+    }, [downloadList])
+
+    useEffect(() => {
         if (data.length) {
             setIsDisableButton(false)
         }
     }, [data])
+
+
+    const parseDownloadList = (downloadList) => {
+
+        const listRowsExcel = downloadList.map((oldRow) => {
+            const listParseOldRows = getValueRow(oldRow)
+            const timeServer = convertValueDate(oldRow.ts)
+            const rowExcel = {}
+            listParseOldRows.forEach((oldCell) => {
+                if (oldCell.type === 'date') {
+                    rowExcel.date = timeServer
+                } else {
+                    rowExcel[oldCell.type] = oldCell.value
+                }
+
+            })
+           return rowExcel
+        })
+
+       setData(listRowsExcel)
+    }
+
+    // const parseDownloadList = (downloadList) => {
+    //     const listRowsExcel = []
+    //     downloadList.forEach((oldRow) => {
+    //         const rowExcel = {}
+    //         const listParseOldRows = getValueRow(oldRow)
+    //         listParseOldRows.forEach((oldCell) => {
+    //             rowExcel[oldCell.type] = oldCell.value
+    //         })
+    //         listRowsExcel.push(rowExcel)
+    //     })
+    //     console.log(listRowsExcel)
+    // }
+
 
     const isButtonActivate = () => {
         setData([])
@@ -53,8 +93,7 @@ function DateTimePickerValue({ downloadList, getStatisticDownload }) {
         const dateNow = new Date()
         return dateNow.setTime(dateFull.getTime())
     }
-
-
+    console.log('render Time Picker')
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
@@ -73,21 +112,20 @@ function DateTimePickerValue({ downloadList, getStatisticDownload }) {
                     />
                 </DemoContainer>
             </LocalizationProvider>
-            {/*<Xls handleListData={handleListData} downloadList={downloadList} valueFrom={valueFrom} valueTo={valueTo}/>*/}
             <ExcelFile element={<button style={{margin: 30}} disabled= {isDisableButton} onClick={isButtonActivate}>Download</button>}  filename={'statistic'}>
-                <ExcelSheet data={data} name="Employees">
+                <ExcelSheet data={data} name="Statistic">
                     <ExcelColumn label="Время" value="date"/>
                     <ExcelColumn label="Причина передачи сообщения" value="causeMessage"/>
                     <ExcelColumn label="Заряд батареи, %" value="batteryCharge"/>
-                    {/*<ExcelColumn label="Температура, С" value="temp"/>*/}
-                    {/*<ExcelColumn label="Влажность, %" value="humidity"/>*/}
-                    {/*<ExcelColumn label="Состояние двери (датчик №2)" value="doorStatus"/>*/}
-                    {/*<ExcelColumn label="Угол отклонения от вертикали, град." value="deflectionAngle"/>*/}
-                    {/*<ExcelColumn label="fcnt" value="fcnt"/>*/}
+                    <ExcelColumn label="Температура, С" value="temp"/>
+                    <ExcelColumn label="Влажность, %" value="humidity"/>
+                    <ExcelColumn label="Состояние двери (датчик №2)" value="doorStatus"/>
+                    <ExcelColumn label="Угол отклонения от вертикали, град." value="deflectionAngle"/>
+                    <ExcelColumn label="fcnt" value="fcnt"/>
                 </ExcelSheet>
             </ExcelFile>
         </>
     );
 }
 
-export default DateTimePickerValue;
+export default React.memo(DateTimePickerValue);

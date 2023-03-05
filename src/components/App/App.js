@@ -96,11 +96,6 @@ function App() {
     }
   }, [lastMessage]);
 
-  // useEffect(() => {
-  //
-  // }, [])
-
-
 
   function getStatisticDownload(loadDayFrom, loadDayTo) {
     setBodyRequestListData( {
@@ -112,9 +107,6 @@ function App() {
       }
     })
   }
-
-
-
 
   const handleClickLogin = useCallback(() => sendMessage(JSON.stringify(bodyRequestLogin)), []);
   const handleClickLastData = useCallback(() => sendMessage(JSON.stringify(bodyRequestLastData)), []);
@@ -132,11 +124,10 @@ function App() {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
-  console.log(downloadList)
+  // console.log(downloadList)
 
   return (
       <div>
-        {/*<button onClick={handleClickLogin} disabled={readyState !== ReadyState.OPEN}>Войти</button>*/}
         <span>The WebSocket is currently {connectionStatus}</span>
         <DataTimePicker downloadList={downloadList} getStatisticDownload={getStatisticDownload} />
         <Table payload={payload}/>
