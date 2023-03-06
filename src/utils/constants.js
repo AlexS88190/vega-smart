@@ -77,3 +77,7 @@ export const doorStatusMap = {
     open: '00',
     close: '01'
 }
+
+export const jwt = localStorage.getItem('jwt');
+
+export const basePath = 'wss://admin.iotvega.com/ws'

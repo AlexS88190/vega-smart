@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {rowHeadTable, doorStatusMap} from "../../utils/constants";
 import './Table.css'
+import {rowHeadTable} from "../../utils/constants";
 import {useParse} from "../../utils/parseResponseServer";
 
 
@@ -11,13 +11,19 @@ function Table({payload, isCollectingStatistic}) {
     const {getValueRow} = useParse()
 
     useEffect(() => {
-        if (payload) {
+        if (!isCollectingStatistic) {
             setRows([])
+        }
+    }, [isCollectingStatistic])
+
+    useEffect(() => {
+        if (payload) {
             drawTable()
         }
     }, [payload])
 
     function drawTable() {
+        console.log(rows)
         if (!isCollectingStatistic) {
             setRows(() => {
                 return [getValueRow(payload)]
@@ -29,8 +35,8 @@ function Table({payload, isCollectingStatistic}) {
         }
     }
 
+    console.log(rows)
 
-    console.log('render Table')
     return (
         <>
             <table>

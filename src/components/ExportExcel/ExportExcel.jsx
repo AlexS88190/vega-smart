@@ -8,7 +8,6 @@ import ReactExport from "react-export-excel-xlsx-fix";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en-gb';
-
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {useEffect, useState} from "react";
 import {useParse} from "../../utils/parseResponseServer";
@@ -21,9 +20,7 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleStatistic }) {
     const [valueFrom, setValueFrom] = React.useState(dayjs(''));
     const [valueTo, setValueTo] = React.useState(dayjs(''));
-
     const [data, setData] = useState([]);
-
     const [isDisableButton, setIsDisableButton] = useState(true)
 
     const {getValueRow, convertValueDate} = useParse()
@@ -32,16 +29,12 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
         if (valueFrom.$L !== 'en' && valueTo.$L !== 'en') {
             const loadDayFrom = convertDateToUtc(valueFrom.$d)
             const loadDayTo = convertDateToUtc(valueTo.$d)
-            console.log(loadDayFrom)
-            console.log(loadDayTo)
-
             getStatisticDownload(loadDayFrom, loadDayTo)
         }
     }, [valueFrom, valueTo])
 
     useEffect(() => {
         parseDownloadList(downloadList)
-
     }, [downloadList])
 
     useEffect(() => {
@@ -52,7 +45,6 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
 
 
     const parseDownloadList = (downloadList) => {
-
         const listRowsExcel = downloadList.map((oldRow) => {
             const listParseOldRows = getValueRow(oldRow)
             const timeServer = convertValueDate(oldRow.ts)
@@ -63,27 +55,11 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
                 } else {
                     rowExcel[oldCell.type] = oldCell.value
                 }
-
             })
            return rowExcel
         })
-
        setData(listRowsExcel)
     }
-
-    // const parseDownloadList = (downloadList) => {
-    //     const listRowsExcel = []
-    //     downloadList.forEach((oldRow) => {
-    //         const rowExcel = {}
-    //         const listParseOldRows = getValueRow(oldRow)
-    //         listParseOldRows.forEach((oldCell) => {
-    //             rowExcel[oldCell.type] = oldCell.value
-    //         })
-    //         listRowsExcel.push(rowExcel)
-    //     })
-    //     console.log(listRowsExcel)
-    // }
-
 
     const isButtonActivate = () => {
         setData([])
@@ -98,7 +74,6 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
         return dateNow.setTime(dateFull.getTime())
     }
 
-    console.log('render Time Picker')
     return (
      <div className='export-excel'>
         <div className='export-excel__content'>
@@ -118,7 +93,9 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
                     />
                 </DemoContainer>
             </LocalizationProvider>
-            <ExcelFile element={<button style={{margin: 30}} disabled= {isDisableButton} onClick={isButtonActivate}>Download</button>} filename={'statistic'}>
+            <ExcelFile element=
+                           {<button className={`${isDisableButton ? "export-excel__button export-excel__button_disable" : "export-excel__button export-excel__button_load"}`}
+                            style={{margin: 30}} disabled= {isDisableButton} onClick={isButtonActivate}>Download</button>} filename={'statistic'}>
                 <ExcelSheet data={data} name="Statistic">
                     <ExcelColumn label="Время" value="date"/>
                     <ExcelColumn label="Причина передачи сообщения" value="causeMessage"/>
@@ -135,7 +112,7 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
              <Link className="link" to='/map'>
                  <p className="link__title">Карта</p>
              </Link>
-             <button className="export-excel__button_Logout" onClick={handleLogout}>Выход</button>
+             <button className="export-excel__button export-excel__button_Logout" onClick={handleLogout}>Выход</button>
              <Switcher handleStatistic={handleStatistic}/>
              <p>Накопление статистики в online режиме</p>
          </div>

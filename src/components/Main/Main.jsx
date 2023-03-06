@@ -1,11 +1,14 @@
 import ExportExcel from "../ExportExcel/ExportExcel";
 import Table from "../Table/Table"
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 
 function Main({payload, downloadList, getStatisticDownload, handleLogout, handleClickLastData}) {
-
     const [isCollectingStatistic, setCollectingStatistic] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => handleClickLastData(), 1000);
+    }, []);
 
     function handleStatistic() {
         setCollectingStatistic(!isCollectingStatistic)
@@ -22,4 +25,4 @@ function Main({payload, downloadList, getStatisticDownload, handleLogout, handle
     )
 }
 
-export default Main;
+export default React.memo(Main);

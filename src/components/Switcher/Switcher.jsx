@@ -7,10 +7,7 @@ export default function Switcher({handleStatistic}) {
 
     return (
         <div>
-            {/*<Switch {...label} defaultChecked />*/}
             <Switch {...label} onChange={handleStatistic} />
-            {/*<Switch {...label} disabled defaultChecked />*/}
-            {/*<Switch {...label} disabled />*/}
         </div>
     );
 }
