@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+### Приложение для отслеживания состояния датчиков Vega Smart-HS0101:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Данное приложение разработано согласно тестового задания. В приложении реализован функционал по отслеживанию параметров состояния датчиков Вега Smart-HS0101 в реальном времени, установленных в  
+помещениях ООО "Вега-Абсолют". А именно: дате и времени последнего опроса датчика сервером, причины передачи сообщения, заряда батареи температуры в помещении, влажности, угла отклонения от вертикали,  
+состояния двери по датчику №2 (предположительно в паяльном помещении), параметра fcnt. Доступна выгрузка в формате .xlsx статистики указанных параметров за выбранный временной промежуток.  
+Добавлена карта на которой по обозначенным в ТЗ координатам отображен маркер, меняющий цвет зависимости от состояния открытия/закрытия двери (состояние датчика открытия №2).  
+Кроме этого, **в тестовом режиме** добавлен сбор статиситики показаний (крайнее показание отображается в верхней строке таблицы). Реализована возможность перемещения по страницам приложения при помощи  
+библиотеки react-router. Добавлена возможность сохранения передаваемого сервером токена, в связи с чем, возможна перезагрузка страницы без потери данных и выхода на страницу "авторизации". Также  
+не возможно, прописав в адресной строке соответствующие роуты, получить доступ к приложению предварительно не нажав кнопку "Войти" (роуты основного контента приложения защищены).
 
-## Available Scripts
+### В данном проекте применены следующие технологии:
+* Проект построен на библиотеке React c использованием функционального подхода
+* React Router
+* Material UI
+* Верстка
+* Применена трансформация отдельных элементов
+* При верстке приложения применена методология БЭМ
 
-In the project directory, you can run:
+### Перспективы доработки:
+* Перевести приложение на TypeScript
+* При увеличении функционала добавить глобальный state посредством библиотеки Redux
+* Добавить регистрацию и авторизацию пользователей
+* Оформить приложение в соответствии с разработанным дизайном в стиле библиотеки компонентов Material UI или AntDesign
+* Добавить переменные окружения
 
-### `npm start`
+### Запуск приложения:
+Возможно два варианта запуска приложения в зависимости использования Docker (команды набираются без ковычек)
+1. **Без** Docker
+* Уcтановить на компьютер серверную среду [Node.js](https://nodejs.dev/en/download)
+* Скопировать проект
+* Командой "npm install" установить все зависимости
+* Командой "npm run start" запустить приложение
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Если используете** Docker _(предпочтительный способ)_
+* Скопировать проект
+* Командой "npm install" установить все зависимости
+* Командой "docker build -t vega-smart-app ." собрать приложение
+* Командой docker-compose up запустить приложение в контейнере Docker
+* После того как контейнер запустится, приложение будет доступно на 80-м порту по [ссылке](http://localhost:80)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+##### В случае возникновения багов (не обновляется информация в реальном времени), необходимо в браузере удалить jwt token и перезагрузить страницу
 
-### `npm test`
+### С функционалом приложения можно ознакомиться по [ссылке](https://alexs88190.github.io/vega-smart/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Репозиторий [здесь](https://github.com/AlexS88190/vega-smart)
