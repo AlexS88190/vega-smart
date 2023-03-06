@@ -23,7 +23,6 @@ function Table({payload, isCollectingStatistic}) {
     }, [payload])
 
     function drawTable() {
-        console.log(rows)
         if (!isCollectingStatistic) {
             setRows(() => {
                 return [getValueRow(payload)]
@@ -34,8 +33,6 @@ function Table({payload, isCollectingStatistic}) {
             })
         }
     }
-
-    console.log(rows)
 
     return (
         <>
