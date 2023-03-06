@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/vega-smart/static/css/main.2aead604.css",
+    "main.js": "/vega-smart/static/js/main.26d4040f.js",
+    "static/media/Inter-Bold.woff": "/vega-smart/static/media/Inter-Bold.93c1301bd9f486c573b3.woff",
+    "static/media/Inter-Black.woff": "/vega-smart/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff": "/vega-smart/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-Bold.woff2": "/vega-smart/static/media/Inter-Bold.ec64ea577b0349e055ad.woff2",
+    "static/media/Inter-Black.woff2": "/vega-smart/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2": "/vega-smart/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "index.html": "/vega-smart/index.html",
+    "main.2aead604.css.map": "/vega-smart/static/css/main.2aead604.css.map",
+    "main.26d4040f.js.map": "/vega-smart/static/js/main.26d4040f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2aead604.css",
+    "static/js/main.26d4040f.js"
+  ]
+}
