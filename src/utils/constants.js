@@ -72,3 +72,8 @@ export const typeTemplate = {
     '7': 'deflectionAngle',
     '8': 'fcnt'
 }
+
+export const doorStatusMap = {
+    open: '00',
+    close: '01'
+}

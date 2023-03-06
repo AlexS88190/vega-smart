@@ -1,6 +1,9 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import './ExportExcel.css'
+import logo from "../../images/logo.png";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import {Link} from "react-router-dom";
 import ReactExport from "react-export-excel-xlsx-fix";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,12 +12,13 @@ import 'dayjs/locale/en-gb';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import {useEffect, useState} from "react";
 import {useParse} from "../../utils/parseResponseServer";
+import Switcher from "../Switcher/Switcher";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
-function DateTimePickerValue({ downloadList, getStatisticDownload }) {
+function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleStatistic }) {
     const [valueFrom, setValueFrom] = React.useState(dayjs(''));
     const [valueTo, setValueTo] = React.useState(dayjs(''));
 
@@ -93,9 +97,11 @@ function DateTimePickerValue({ downloadList, getStatisticDownload }) {
         const dateNow = new Date()
         return dateNow.setTime(dateFull.getTime())
     }
+
     console.log('render Time Picker')
     return (
-        <>
+     <div className='export-excel'>
+        <div className='export-excel__content'>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
                 <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
                     <DateTimePicker
@@ -112,7 +118,7 @@ function DateTimePickerValue({ downloadList, getStatisticDownload }) {
                     />
                 </DemoContainer>
             </LocalizationProvider>
-            <ExcelFile element={<button style={{margin: 30}} disabled= {isDisableButton} onClick={isButtonActivate}>Download</button>}  filename={'statistic'}>
+            <ExcelFile element={<button style={{margin: 30}} disabled= {isDisableButton} onClick={isButtonActivate}>Download</button>} filename={'statistic'}>
                 <ExcelSheet data={data} name="Statistic">
                     <ExcelColumn label="Время" value="date"/>
                     <ExcelColumn label="Причина передачи сообщения" value="causeMessage"/>
@@ -124,8 +130,18 @@ function DateTimePickerValue({ downloadList, getStatisticDownload }) {
                     <ExcelColumn label="fcnt" value="fcnt"/>
                 </ExcelSheet>
             </ExcelFile>
-        </>
+        </div>
+         <div className="export-excel__button-container">
+             <Link className="link" to='/map'>
+                 <p className="link__title">Карта</p>
+             </Link>
+             <button className="export-excel__button_Logout" onClick={handleLogout}>Выход</button>
+             <Switcher handleStatistic={handleStatistic}/>
+             <p>Накопление статистики в online режиме</p>
+         </div>
+         <img src={logo} alt="логотип" className="export-excel__logo"/>
+     </div>
     );
 }
 
-export default React.memo(DateTimePickerValue);
+export default React.memo(ExportExcel);

@@ -1,8 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import './App.css'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import Table from "../Table/Table";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import Main from "../Main/Main";
 import '../Table/Table.css';
-import DataTimePicker from "../DataTimePicker/DataTimePicker";
+// import YandexMap from "../YandexMap/YandexMap";
+import Login from "../Login/Login";
+import YandexMap from "../YandexMap/YandexMap";
+import {doorStatusMap} from "../../utils/constants";
 
 const bodyRequestLogin = {
   cmd: 'auth_req',
@@ -35,12 +40,14 @@ function App() {
   const [socketUrl, setSocketUrl] = useState('wss://admin.iotvega.com/ws');
   const [payload, setPayload] = useState(undefined);
   const [downloadList, setDownloadList] = useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(undefined);
 
   const [bodyRequestListData, setBodyRequestListData] = useState({})
   const [bodyRequestToken, setBodyRequestToken] = useState({})
+  const [isStateDoorSoldering, setStateDoorSoldering] = useState(undefined)
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {shouldReconnect: (closeEvent) => true});
-
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -86,6 +93,7 @@ function App() {
 
       } else if (response.cmd === 'get_data_resp' && response.data_list.length === 1) {
         setPayload(response.data_list[0])
+        getStateDoor(response.data_list[0])
       } else if (response.cmd === 'rx') {
         setPayload(response)
       } else if (response.cmd === 'get_data_resp' && response.data_list.length > 1) {
@@ -108,6 +116,20 @@ function App() {
     })
   }
 
+  function getStateDoor(payload) {
+    const stateDoorHex = payload.data.slice(20, 22)
+    if (stateDoorHex === doorStatusMap.open) {
+      setStateDoorSoldering(true)
+    } else if (stateDoorHex === doorStatusMap.close) {
+      setStateDoorSoldering(false)
+    }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
   const handleClickLogin = useCallback(() => sendMessage(JSON.stringify(bodyRequestLogin)), []);
   const handleClickLastData = useCallback(() => sendMessage(JSON.stringify(bodyRequestLastData)), []);
 
@@ -127,12 +149,46 @@ function App() {
   // console.log(downloadList)
 
   return (
-      <div>
-        <span>The WebSocket is currently {connectionStatus}</span>
-        <DataTimePicker downloadList={downloadList} getStatisticDownload={getStatisticDownload} />
-        <Table payload={payload}/>
+      <div className="page">
+        <div className="page__content">
+          {/*<span>The WebSocket is currently {connectionStatus}</span>*/}
+          <Routes>
+            <Route
+                path='/login'
+                element={
+                  <Login/>
+                }
+            />
+            <Route
+                path='/'
+                element={
+                    <Main
+                        downloadList={downloadList}
+                        getStatisticDownload={getStatisticDownload}
+                        payload={payload}
+                        handleLogout={handleLogout}
+                        handleClickLastData={handleClickLastData}
+                    />
+                }
+            />
+            <Route
+                path='/map'
+                element={
+                  <YandexMap isStateDoorSoldering={isStateDoorSoldering}/>
+                }
+            />
 
+          </Routes>
+
+        </div>
       </div>
+
+        // {/*<div>*/}
+        // {/*  <span>The WebSocket is currently {connectionStatus}</span>*/}
+        // {/*  <DataTimePicker downloadList={downloadList} getStatisticDownload={getStatisticDownload} />*/}
+        // {/*  <Table payload={payload}/>*/}
+        // {/*</div>*/}
+
   );
 }
 
