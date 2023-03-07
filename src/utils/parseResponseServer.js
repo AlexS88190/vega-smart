@@ -94,7 +94,6 @@ export const useParse = () => {
             }
             row.push({id: i + 1, value: listValueCells[i], type: typeTemplate[String(i + 1)]})
         }
-        // console.log(row)
         return row
     }
 
