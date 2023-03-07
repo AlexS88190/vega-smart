@@ -23,7 +23,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (jwt) {
+    if (localStorage.getItem('jwt')) {
       setLoggedIn(true)
       setBodyRequestToken(
           api.getJvtToken(jwt)
@@ -49,11 +49,13 @@ function App() {
 
   useEffect(() => {
     if (readyState === ReadyState.OPEN) {
-      if (jwt) {
+      if (localStorage.getItem('jwt')) {
+        console.log('изменился стейт')
         handleSendToken()
-        console.log('Токен отправлен 2 use')
+        console.log('Запрос на Токен ОТПРАВЛЕН 2 use')
       }
     } else if (readyState === ReadyState.CLOSED) {
+      console.log('Отвалился по токену')
       console.log('Отвалился по токену')
     }
   }, [readyState]);
@@ -62,7 +64,7 @@ function App() {
     if (lastMessage !== null) {
       const response = JSON.parse(lastMessage.data)
       console.log(response)
-      const availabilityJwt = response.cmd === 'auth_resp' && response.token !== jwt
+      const availabilityJwt = response.cmd === 'auth_resp' && response.token !== localStorage.getItem('jwt');
       if (availabilityJwt) {
         setLoggedIn(true)
         localStorage.setItem('jwt', response.token);
@@ -84,9 +86,9 @@ function App() {
   }, [lastMessage]);
 
   function getStatisticDownload(loadDayFrom, loadDayTo) {
-    setBodyRequestListData(
-        api.getListData(loadDayFrom, loadDayTo)
-    )
+      setBodyRequestListData(
+          api.getListData(loadDayFrom, loadDayTo)
+      )
   }
 
   function getStateDoor(payload) {
@@ -107,11 +109,24 @@ function App() {
     navigate('/login');
   }
 
+  function dropDownloadList() {
+    setDownloadList([])
+  }
+
   const handleClickLogin = useCallback(() => sendMessage(JSON.stringify(api.authorize())), []);
   const handleClickLastData = useCallback(() => sendMessage(JSON.stringify(api.getLastData())), []);
   const handleListData = useCallback(() => sendMessage(JSON.stringify(bodyRequestListData)), [bodyRequestListData])
   const handleSendToken = useCallback(() => sendMessage(JSON.stringify(bodyRequestToken)), [bodyRequestToken]);
 
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
+
+  console.log(bodyRequestListData)
   return (
       <div className="page">
         <div className="page__content">
@@ -132,6 +147,8 @@ function App() {
                         payload={payload}
                         handleLogout={handleLogout}
                         handleClickLastData={handleClickLastData}
+                        connectionStatus={connectionStatus}
+                        dropDownloadList={dropDownloadList}
                     />
                   </ProtectedRoute>
                 }
