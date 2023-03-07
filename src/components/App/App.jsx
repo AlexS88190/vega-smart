@@ -135,7 +135,6 @@ function App() {
                         payload={payload}
                         handleLogout={handleLogout}
                         handleClickLastData={handleClickLastData}
-                        connectionStatus={connectionStatus}
                         dropDownloadList={dropDownloadList}
                     />
                   </ProtectedRoute>

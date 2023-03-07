@@ -17,7 +17,7 @@ const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
-function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleStatistic, connectionStatus, dropDownloadList }) {
+function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleStatistic, dropDownloadList }) {
     const [valueFrom, setValueFrom] = React.useState(dayjs(''));
     const [valueTo, setValueTo] = React.useState(dayjs(''));
     const [data, setData] = useState([]);
@@ -75,8 +75,6 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
         return dateNow.setTime(dateFull.getTime())
     }
     return (
-        <>
-        <span>The WebSocket is currently {connectionStatus}</span>
      <div className='export-excel'>
         <div className='export-excel__content'>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
@@ -120,7 +118,6 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
          </div>
          <img src={logo} alt="логотип" className="export-excel__logo"/>
      </div>
-        </>
     );
 }
 

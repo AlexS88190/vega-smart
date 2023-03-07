@@ -3,7 +3,7 @@ import Table from "../Table/Table"
 import React, {useEffect, useState} from "react";
 
 
-function Main({payload, downloadList, getStatisticDownload, handleLogout, handleClickLastData, connectionStatus, dropDownloadList}) {
+function Main({payload, downloadList, getStatisticDownload, handleLogout, handleClickLastData, dropDownloadList}) {
     const [isCollectingStatistic, setCollectingStatistic] = useState(false)
 
     useEffect(() => {
@@ -19,7 +19,7 @@ function Main({payload, downloadList, getStatisticDownload, handleLogout, handle
     }
     return (
         <>
-            <ExportExcel connectionStatus={connectionStatus} downloadList={downloadList} getStatisticDownload={getStatisticDownload} handleLogout={handleLogout} handleStatistic={handleStatistic} dropDownloadList={dropDownloadList}/>
+            <ExportExcel downloadList={downloadList} getStatisticDownload={getStatisticDownload} handleLogout={handleLogout} handleStatistic={handleStatistic} dropDownloadList={dropDownloadList}/>
             <Table payload={payload} isCollectingStatistic={isCollectingStatistic}/>
         </>
     )
