@@ -23,7 +23,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (jwt) {
+    if (localStorage.getItem('jwt')) {
       setLoggedIn(true)
       setBodyRequestToken(
           api.getJvtToken(jwt)
@@ -46,18 +46,16 @@ function App() {
   }, [bodyRequestListData])
 
   useEffect(() => {
-    if (readyState === ReadyState.OPEN) {
-      if (jwt) {
+    if (readyState === ReadyState.OPEN && localStorage.getItem('jwt')) {
         handleSendToken()
-      }
-    } else if (readyState === ReadyState.CLOSED) {
     }
   }, [readyState]);
 
   useEffect(() => {
     if (lastMessage !== null) {
       const response = JSON.parse(lastMessage.data)
-      const availabilityJwt = response.cmd === 'auth_resp' && response.token !== jwt
+      const availabilityJwt = response.cmd === 'auth_resp' && response.token !== localStorage.getItem('jwt');
+
       if (availabilityJwt) {
         setLoggedIn(true)
         localStorage.setItem('jwt', response.token);
@@ -77,9 +75,9 @@ function App() {
   }, [lastMessage]);
 
   function getStatisticDownload(loadDayFrom, loadDayTo) {
-    setBodyRequestListData(
-        api.getListData(loadDayFrom, loadDayTo)
-    )
+      setBodyRequestListData(
+          api.getListData(loadDayFrom, loadDayTo)
+      )
   }
 
   function getStateDoor(payload) {
@@ -100,10 +98,22 @@ function App() {
     navigate('/login');
   }
 
+  function dropDownloadList() {
+    setDownloadList([])
+  }
+
   const handleClickLogin = useCallback(() => sendMessage(JSON.stringify(api.authorize())), []);
   const handleClickLastData = useCallback(() => sendMessage(JSON.stringify(api.getLastData())), []);
   const handleListData = useCallback(() => sendMessage(JSON.stringify(bodyRequestListData)), [bodyRequestListData])
   const handleSendToken = useCallback(() => sendMessage(JSON.stringify(bodyRequestToken)), [bodyRequestToken]);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
 
   return (
       <div className="page">
@@ -125,6 +135,8 @@ function App() {
                         payload={payload}
                         handleLogout={handleLogout}
                         handleClickLastData={handleClickLastData}
+                        connectionStatus={connectionStatus}
+                        dropDownloadList={dropDownloadList}
                     />
                   </ProtectedRoute>
                 }

@@ -10,6 +10,7 @@ export default function YandexMap({ isStateDoorSoldering }) {
         zoom: 10,
         controls: []
     };
+
     return (
         <>
             <Link className="link link_map" to='/'>
