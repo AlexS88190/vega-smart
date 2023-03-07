@@ -38,7 +38,6 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
     }, [downloadList])
 
     useEffect(() => {
-        console.log(data)
         if (data.length) {
             setIsDisableButton(false)
         }
@@ -75,8 +74,6 @@ function ExportExcel({ downloadList, getStatisticDownload, handleLogout, handleS
         const dateNow = new Date()
         return dateNow.setTime(dateFull.getTime())
     }
-    // console.log(data)
-    // console.log(isDisableButton)
     return (
         <>
         <span>The WebSocket is currently {connectionStatus}</span>

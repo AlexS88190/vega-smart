@@ -28,7 +28,6 @@ function App() {
       setBodyRequestToken(
           api.getJvtToken(jwt)
       )
-      console.log('Токен отправлен 1 use')
     }
 
   }, [])
@@ -42,33 +41,23 @@ function App() {
   useEffect(() => {
     if (bodyRequestListData.cmd) {
       handleListData()
-      console.log('Запросил статистику')
     }
 
   }, [bodyRequestListData])
 
   useEffect(() => {
-    if (readyState === ReadyState.OPEN) {
-      if (localStorage.getItem('jwt')) {
-        console.log('изменился стейт')
+    if (readyState === ReadyState.OPEN && localStorage.getItem('jwt')) {
         handleSendToken()
-        console.log('Запрос на Токен ОТПРАВЛЕН 2 use')
-      }
-    } else if (readyState === ReadyState.CLOSED) {
-      console.log('Отвалился по токену')
-      console.log('Отвалился по токену')
     }
   }, [readyState]);
 
   useEffect(() => {
     if (lastMessage !== null) {
       const response = JSON.parse(lastMessage.data)
-      console.log(response)
       const availabilityJwt = response.cmd === 'auth_resp' && response.token !== localStorage.getItem('jwt');
       if (availabilityJwt) {
         setLoggedIn(true)
         localStorage.setItem('jwt', response.token);
-        console.log('токен записан в Storage')
         setBodyRequestToken(
             api.getJvtToken(response.token)
         )
@@ -80,7 +69,6 @@ function App() {
         setPayload(response)
       } else if (response.cmd === 'get_data_resp' && response.data_list.length > 1) {
           setDownloadList(response.data_list)
-          console.log('Запросил')
       }
     }
   }, [lastMessage]);
@@ -126,7 +114,6 @@ function App() {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
-  console.log(bodyRequestListData)
   return (
       <div className="page">
         <div className="page__content">
